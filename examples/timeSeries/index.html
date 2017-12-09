@@ -88,7 +88,8 @@ is used by our example image loader-->
         $('#mrbottomleft').text("WW/WL:" + Math.round(e.detail.viewport.voi.windowWidth) + "/" + Math.round(e.detail.viewport.voi.windowCenter));
         $('#zoomText').text("Zoom:" + e.detail.viewport.scale.toFixed(2));
     };
-    element.addEventListener("CornerstoneViewportUpdated", onViewportUpdated, false);
+
+    element.addEventListener("cornerstoneimagerendered", onViewportUpdated);
 
     function onNewImage(e) {
         var timeSeriesToolData = cornerstoneTools.getToolState(element, 'timeSeries');
@@ -173,18 +174,15 @@ is used by our example image loader-->
 
     });
 
-    function onMeasurementAdded(e, ed) {
+    function onMeasurementAdded(e) {
+        var eventData = e.detail;
         $('#data').empty();
-        ed.measurement.lineSample.samples.forEach(function(sample) {
+        eventData.measurement.lineSample.samples.forEach(function(sample) {
             console.log(sample);
             $('#data').append('<li>' + sample + '</li>');
         });
     }
 
-
-    $(cornerstoneTools.MeasurementManager).on('CornerstoneMeasurementAdded',onMeasurementAdded);
-
-
-
+    cornerstone.events.addEventListener('cornerstonetoolsmeasurementadded', onMeasurementAdded);
 </script>
 </html>

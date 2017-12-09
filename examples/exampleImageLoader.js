@@ -79,9 +79,12 @@
             image.windowWidth = 770;
         }
 
-        var deferred = $.Deferred();
-        deferred.resolve(image);
-        return deferred;
+        return {
+            promise: new Promise((resolve) => {
+              resolve(image);
+            }),
+            cancelFn: undefined
+        };
     }
 
 

@@ -1,3 +1,4 @@
+import EVENTS from '../events.js';
 import external from '../externalModules.js';
 import { getToolState } from '../stateManagement/toolState.js';
 import requestPoolManager from '../requestPool/requestPoolManager.js';
@@ -90,11 +91,12 @@ export default function (element, newImageIdIndex) {
   const config = stackScroll.getConfiguration();
 
   if (config && config.retryLoadOnScroll === true) {
-    const newImagePromise = cornerstone.imageCache.getImagePromise(newImageId);
+    // Const newImageLoadObject = cornerstone.imageCache.getImageLoadObject(newImageId);
 
-    if (newImagePromise && newImagePromise.state() === 'rejected') {
+    // TODO: No way to check state of Promise. No way to know if it is rejected.
+    /* If (newImageLoadObject && newImagePromise.state() === 'rejected') {
       cornerstone.imageCache.removeImagePromise(newImageId);
-    }
+    }*/
   }
 
   // Convert the preventCache value in stack data to a boolean
@@ -112,5 +114,5 @@ export default function (element, newImageIdIndex) {
   // Make sure we kick off any changed download request pools
   requestPoolManager.startGrabbing();
 
-  triggerEvent(element, 'CornerstoneStackScroll', eventData);
+  triggerEvent(element, EVENTS.STACK_SCROLL, eventData);
 }
